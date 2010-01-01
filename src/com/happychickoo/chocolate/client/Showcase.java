@@ -18,7 +18,7 @@ package com.happychickoo.chocolate.client;
 
 import com.google.gwt.core.client.EntryPoint;
 
-public class Chocolate implements EntryPoint {
+public class Showcase implements EntryPoint {
   @Override
   public void onModuleLoad() {
     // TODO: Implement the entry point.
