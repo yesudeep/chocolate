@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.happychickoo.chocolate.client;
+package com.happychickoo.chocolate.showcase.client;
 
 import com.google.gwt.core.client.EntryPoint;
 
