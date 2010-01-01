@@ -5,20 +5,8 @@
 
 <web-app>
   
-  <!-- Servlets -->
-  <servlet>
-    <servlet-name>greetServlet</servlet-name>
-    <servlet-class>com.happychickoo.chocolate.server.GreetingServiceImpl</servlet-class>
-  </servlet>
-  
-  <servlet-mapping>
-    <servlet-name>greetServlet</servlet-name>
-    <url-pattern>/chocolate/greet</url-pattern>
-  </servlet-mapping>
-  
-  <!-- Default page to serve -->
   <welcome-file-list>
-    <welcome-file>Chocolate.html</welcome-file>
+    <welcome-file>showcase.html</welcome-file>
   </welcome-file-list>
 
 </web-app>

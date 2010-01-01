@@ -1,3 +1,4 @@
-#Sat Jan 02 04:23:51 GMT+05:30 2010
+#Sat Jan 02 05:11:59 GMT+05:30 2010
 eclipse.preferences.version=1
+entryPointModules=com.happychickoo.chocolate.showcase.Showcase
 filesCopiedToWebInfLib=gwt-servlet.jar
