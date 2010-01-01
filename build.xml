@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <project name="Chocolate" default="build" basedir=".">
 
-	<!-- Please define the GWT_HOME environment variable before building. -->
+	<!-- 
+	   Please define the GWT_HOME environment variable before building. 
+	   Download Apache Ivy and copy ivy.jar to your ${HOME}/.ant/lib as well.
+	-->
 
 	<property environment="env" />
 	<property name="gwt.sdk" location="${env.GWT_HOME}" />
@@ -51,9 +54,9 @@
 			</classpath>
 			<jvmarg value="-Xmx256M" />
 			<arg value="-startupUrl" />
-			<arg value="Chocolate.html" />
+			<arg value="showcase.html" />
 			<!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
-			<arg value="com.happychickoo.chocolate.Chocolate" />
+			<arg value="com.happychickoo.chocolate.showcase.Showcase" />
 		</java>
 	</target>
 
