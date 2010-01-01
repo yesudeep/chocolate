@@ -4,5 +4,5 @@
 .DS_Store
 Thumbs.db
 Desktop.ini
-war/classes/
+war/WEB-INF/classes/
 
