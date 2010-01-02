@@ -27,5 +27,7 @@
             conf="all->default" />
         <dependency org="com.google.inject.extensions" name="guice-servlet"
             rev="2.0" conf="all->default" />
+        <dependency org="javax.servlet" name="servlet-api"
+            rev="2.5" conf="compile->default" />
     </dependencies>
 </ivy-module>
