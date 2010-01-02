@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<project xmlns:ivy="antlib:org.apache.ivy.ant" name="Chocolate" default="all" basedir=".">
-
-	<!--
-       Please define the GWT_HOME environment variable before building.
-       Download Apache Ivy and copy ivy.jar to your ${HOME}/.ant/lib as well.
-    -->
+<project xmlns:ivy="antlib:org.apache.ivy.ant" name="Chocolate" default="jar" basedir=".">
 
 	<property environment="env" />
 	<property file="build.properties" />
+	<!-- No longer needed.  Ivy will fetch the GWT SDK. -->
+	<!--
 	<property name="gwt.sdk" location="${env.GWT_HOME}" />
+	-->
 	<property name="build.path" location="war/WEB-INF" />
-	<property name="lib.path" location="${build.path}/lib" />
+	<property name="lib.path" location="lib" />
+	<property name="lib.dest.path" location="${build.path}/lib" />
 	<property name="classes.path" location="${build.path}/classes" />
 	<property name="source.path" location="src" />
 	<property name="test.path" location="test" />
-	<property name="junit.path" location="${env.JUNIT_HOME}/junit-4.8.1.jar" />
+	<property name="junit.path" location="${lib.path}/test/junit.jar" />
 	<property name="source.version" value="1.5" />
 	<property name="target.version" value="1.5" />
 	<property name="project.distname" value="${project.name}-${project.version}" />
@@ -27,24 +26,48 @@
 	<property name="gwt.compile.disableClassMetadata" value="-XdisableClassMetadata" />
 	<property name="gwt.compile.disableCastChecking" value="-XdisableCastChecking" />
 
+	<!-- 
+	   Begin ivy tasks and autoinstall 
+	-->
+	<property name="ivy.install.version" value="2.1.0" />
+	<condition property="ivy.home" value="${env.IVY_HOME}">
+		<isset property="env.IVY_HOME" />
+	</condition>
+	<property name="ivy.home" value="${user.home}/.ant" />
+	<property name="ivy.jar.dir" value="${ivy.home}/lib" />
+	<property name="ivy.jar.file" value="${ivy.jar.dir}/ivy.jar" />
+
+	<target name="download-ivy" unless="offline">
+		<mkdir dir="${ivy.jar.dir}" />
+		<get src="http://repo2.maven.org/maven2/org/apache/ivy/ivy/${ivy.install.version}/ivy-${ivy.install.version}.jar" dest="${ivy.jar.file}" usetimestamp="true" />
+	</target>
+	<target name="init-ivy" depends="download-ivy">
+		<path id="ivy.lib.dest.path">
+			<fileset dir="${ivy.jar.dir}" includes="*.jar" />
+		</path>
+		<taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.dest.path" />
+	</target>
+	<target name="resolve" depends="init-ivy" description="Retrieve dependencies">
+		<ivy:retrieve pattern="${ivy.lib.dir}/[conf]/[artifact].[ext]" />
+	</target>
+	<!-- 
+	   End ivy tasks and autoinstall 
+	-->
+
 	<path id="project.class.path">
 		<pathelement location="${classes.path}" />
-		<pathelement location="${gwt.sdk}/gwt-user.jar" />
-		<fileset dir="${gwt.sdk}" includes="gwt-dev*.jar" />
-		<!-- Add any additional non-server libs (such as JUnit) -->
-		<fileset dir="${lib.path}" includes="**/*.jar" />
+		<!-- Enable the compile directory if you add a compile-time dependency. -->
+		<!--
+		    <fileset dir="${lib.path}/compile" includes="**/*.jar" />
+		-->
+		<fileset dir="${lib.path}/sdk" includes="**/*.jar" />
 	</path>
 
-	<target name="all" depends="resolve,jar" />
-
-    <target name="resolve" description="Retrieve dependencies">
-        <ivy:retrieve />
-    </target>
-
-	<target name="libs" description="Copy libs to ${lib.path}">
-		<mkdir dir="${lib.path}" />
-		<copy todir="${lib.path}" file="${gwt.sdk}/gwt-servlet.jar" />
-		<!-- Add any additional server libs that need to be copied -->
+	<target name="libs" depends="resolve" description="Copy runtime libs to deployment lib directory">
+		<mkdir dir="${lib.dest.path}" />
+		<copy todir="${lib.dest.path}">
+			<fileset dir="${lib.path}/runtime" includes="**/*.jar" />
+		</copy>
 	</target>
 
 	<target name="javac" depends="libs" description="Compile java source">
@@ -162,6 +185,8 @@
 		<delete file="${project.distname}.jar" />
 		<delete file="${project.distname}.war" />
 		<delete dir="${classes.path}" failonerror="false" />
+		<delete dir="${lib.dest.path}" faileonerror="false" />
+		<delete dir="${lib.path}" failonerror="false" />
 		<delete dir="war/${gwt.module.devmode.name}" failonerror="false" />
 	</target>
 

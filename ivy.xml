@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ivy-module version="2.0">
+    <!--
+        See
+        http://www.mostlyblather.com/2009/10/gwt-20-ms1-with-ivy-dependency.html
+    -->
+    <info organisation="com.happychickoo" module="chocolate" />
+    <configurations>
+        <conf name="runtime" description="needed in servlet container" />
+        <conf name="compile"
+            description="needed for compilation (should include GWT libraries)" />
+        <conf name="sdk"
+            description="gwt sdk (compile time, separate for Eclipse IDE integration)" />
+        <conf name="test" description="test libraries" />
+    </configurations>
+    <dependencies>
+        <dependency org="com.google.gwt" name="gwt-servlet"
+            rev="2.0.0" conf="runtime->default" />
+        <dependency org="com.google.gwt" name="gwt-user" rev="2.0.0"
+            conf="sdk->default" />
+        <dependency org="com.google.gwt" name="gwt-dev" rev="2.0.0"
+            conf="sdk->default" />
+        <dependency org="junit" name="junit" rev="4.7"
+            conf="test->default" />
+    </dependencies>
+</ivy-module>
