@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<project xmlns:ivy="antlib:org.apache.ivy.ant" name="Chocolate" default="jar" basedir=".">
+<project xmlns:ivy="antlib:org.apache.ivy.ant" name="Chocolate" default="all" basedir=".">
 
 	<!--
        Please define the GWT_HOME environment variable before building.
@@ -26,7 +26,7 @@
 	<property name="gwt.compile.logLevel" value="INFO" />
 	<property name="gwt.compile.disableClassMetadata" value="-XdisableClassMetadata" />
 	<property name="gwt.compile.disableCastChecking" value="-XdisableCastChecking" />
-	
+
 	<path id="project.class.path">
 		<pathelement location="${classes.path}" />
 		<pathelement location="${gwt.sdk}/gwt-user.jar" />
@@ -34,6 +34,12 @@
 		<!-- Add any additional non-server libs (such as JUnit) -->
 		<fileset dir="${lib.path}" includes="**/*.jar" />
 	</path>
+
+	<target name="all" depends="resolve,jar" />
+
+    <target name="resolve" description="Retrieve dependencies">
+        <ivy:retrieve />
+    </target>
 
 	<target name="libs" description="Copy libs to ${lib.path}">
 		<mkdir dir="${lib.path}" />
@@ -158,12 +164,6 @@
 		<delete dir="${classes.path}" failonerror="false" />
 		<delete dir="war/${gwt.module.devmode.name}" failonerror="false" />
 	</target>
-
-	<target name="resolve" description="Retrieve dependencies">
-		<ivy:retrieve />
-	</target>
-
-	<target name="all" depends="jar,war" />
 
 	<target name="jar" depends="build" description="Package the project into a jar">
 		<jar destfile="${project.distname}.jar">
