@@ -9,6 +9,7 @@
         <conf name="runtime" description="needed in servlet container" />
         <conf name="compile"
             description="needed for compilation (should include GWT libraries)" />
+        <conf name="all" description="needed at all times" />
         <conf name="sdk"
             description="gwt sdk (compile time, separate for Eclipse IDE integration)" />
         <conf name="test" description="test libraries" />
@@ -22,5 +23,9 @@
             conf="sdk->default" />
         <dependency org="junit" name="junit" rev="4.7"
             conf="test->default" />
+        <dependency org="com.google.inject" name="guice" rev="2.0"
+            conf="all->default" />
+        <dependency org="com.google.inject.extensions" name="guice-servlet"
+            rev="2.0" conf="all->default" />
     </dependencies>
 </ivy-module>
