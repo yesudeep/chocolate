@@ -1,208 +1,252 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<project xmlns:ivy="antlib:org.apache.ivy.ant" name="Chocolate" default="jar" basedir=".">
+<project xmlns:ivy="antlib:org.apache.ivy.ant"
+         name="Chocolate"
+         default="jar"
+         basedir=".">
 
-	<property environment="env" />
-	<property file="build.properties" />
-	<property name="encoding" value="utf-8" />
-	<!-- No longer needed.  Ivy will fetch the GWT SDK. -->
-	<!--
-	<property name="gwt.sdk" location="${env.GWT_HOME}" />
-	-->
-	<property name="build.path" location="war/WEB-INF" />
-	<property name="lib.path" location="lib" />
-	<property name="lib.dest.path" location="${build.path}/lib" />
-	<property name="classes.path" location="${build.path}/classes" />
-	<property name="source.path" location="src" />
-	<property name="test.path" location="test" />
-	<property name="junit.jar.file" location="${lib.path}/test/junit.jar" />
-	<property name="source.version" value="1.5" />
-	<property name="target.version" value="1.5" />
-	<property name="project.distname" value="${project.name}-${project.version}" />
-	<property name="gwt.module" value="com.happychickoo.chocolate.showcase.Showcase" />
-	<property name="gwt.module.devmode" value="${gwt.module}" />
-	<property name="gwt.module.devmode.name" value="showcase" />
-	<property name="gwt.module.devmode.startupUrl" value="${gwt.module.devmode.name}.html" />
-	<property name="gwt.compile.style" value="OBFUSCATED" />
-	<property name="gwt.compile.logLevel" value="INFO" />
-	<property name="gwt.compile.disableClassMetadata" value="-XdisableClassMetadata" />
-	<property name="gwt.compile.disableCastChecking" value="-XdisableCastChecking" />
+    <property environment="env" />
+    <property file="build.properties" />
+    <property name="encoding" value="utf-8" />
+    <!-- No longer needed.  Ivy will fetch the GWT SDK. -->
+    <!--
+      <property name="gwt.sdk" location="${env.GWT_HOME}" />
+      -->
+    <property name="build.path" location="war/WEB-INF" />
+    <property name="lib.path" location="lib" />
+    <property name="lib.dest.path" location="${build.path}/lib" />
+    <property name="classes.path" location="${build.path}/classes" />
+    <property name="source.path" location="src" />
+    <property name="test.path" location="test" />
+    <property name="junit.jar.file" location="${lib.path}/test/junit.jar" />
+    <property name="source.version" value="1.5" />
+    <property name="target.version" value="1.5" />
+    <property name="project.distname"
+              value="${project.name}-${project.version}" />
+    <property name="gwt.module"
+              value="com.happychickoo.chocolate.showcase.Showcase" />
+    <property name="gwt.module.devmode" value="${gwt.module}" />
+    <property name="gwt.module.devmode.name" value="showcase" />
+    <property name="gwt.module.devmode.startupUrl"
+              value="${gwt.module.devmode.name}.html" />
+    <property name="gwt.compile.style" value="OBFUSCATED" />
+    <property name="gwt.compile.logLevel" value="INFO" />
+    <property name="gwt.compile.disableClassMetadata"
+              value="-XdisableClassMetadata" />
+    <property name="gwt.compile.disableCastChecking"
+              value="-XdisableCastChecking" />
 
-	<!-- 
-	   Begin ivy tasks and autoinstall 
-	-->
-	<property name="ivy.install.version" value="2.1.0" />
-	<condition property="ivy.home" value="${env.IVY_HOME}">
-		<isset property="env.IVY_HOME" />
-	</condition>
-	<property name="ivy.home" value="${user.home}/.ant" />
-	<property name="ivy.jar.dir" value="${ivy.home}/lib" />
-	<property name="ivy.jar.file" value="${ivy.jar.dir}/ivy.jar" />
+    <!--
+         Begin ivy tasks and autoinstall
+      -->
+    <property name="ivy.install.version" value="2.1.0" />
+    <condition property="ivy.home" value="${env.IVY_HOME}">
+        <isset property="env.IVY_HOME" />
+    </condition>
+    <property name="ivy.home" value="${user.home}/.ant" />
+    <property name="ivy.jar.dir" value="${ivy.home}/lib" />
+    <property name="ivy.jar.file" value="${ivy.jar.dir}/ivy.jar" />
 
-	<target name="download-ivy" unless="offline">
-		<mkdir dir="${ivy.jar.dir}" />
-		<get src="http://repo2.maven.org/maven2/org/apache/ivy/ivy/${ivy.install.version}/ivy-${ivy.install.version}.jar" dest="${ivy.jar.file}" usetimestamp="true" />
-	</target>
-	<target name="init-ivy" depends="download-ivy">
-		<path id="ivy.lib.dest.path">
-			<fileset dir="${ivy.jar.dir}" includes="*.jar" />
-		</path>
-		<taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.dest.path" />
-	</target>
-	<target name="resolve" depends="init-ivy" description="Retrieve dependencies">
-		<!--
-	        Temporary fix for guice 2.0 and party checksum failures.
-	        http://code.google.com/p/google-guice/issues/detail?id=421
-	    -->
-		<property name="ivy.checksums" value="" />
-		<ivy:retrieve pattern="${ivy.lib.dir}/[conf]/[artifact].[ext]" />
-	</target>
-	<!-- 
-	   End ivy tasks and autoinstall 
-	-->
+    <target name="download-ivy" unless="offline">
+        <mkdir dir="${ivy.jar.dir}" />
+        <get src="http://repo2.maven.org/maven2/org/apache/ivy/ivy/${ivy.install.version}/ivy-${ivy.install.version}.jar"
+             dest="${ivy.jar.file}"
+             usetimestamp="true" />
+    </target>
+    <target name="init-ivy" depends="download-ivy">
+        <path id="ivy.lib.dest.path">
+            <fileset dir="${ivy.jar.dir}" includes="*.jar" />
+        </path>
+        <taskdef resource="org/apache/ivy/ant/antlib.xml"
+                 uri="antlib:org.apache.ivy.ant"
+                 classpathref="ivy.lib.dest.path" />
+    </target>
+    <target name="resolve"
+            depends="init-ivy"
+            description="Retrieve dependencies">
+        <!--
+                Temporary fix for guice 2.0 and party checksum failures.
+                http://code.google.com/p/google-guice/issues/detail?id=421
+            -->
+        <property name="ivy.checksums" value="" />
+        <ivy:retrieve pattern="${ivy.lib.dir}/[conf]/[artifact].[ext]" />
+    </target>
+    <!--
+         End ivy tasks and autoinstall
+      -->
 
-	<path id="project.class.path">
-		<pathelement location="${classes.path}" />
-		<!--fileset dir="${lib.path}/compile" includes="**/*.jar" /-->
-		<fileset dir="${lib.path}/sdk" includes="**/*.jar" />
-		<fileset dir="${lib.path}/all" includes="**/*.jar" />
-	</path>
+    <path id="project.class.path">
+        <pathelement location="${classes.path}" />
+        <!--fileset dir="${lib.path}/compile" includes="**/*.jar" /-->
+        <fileset dir="${lib.path}/sdk" includes="**/*.jar" />
+        <fileset dir="${lib.path}/all" includes="**/*.jar" />
+    </path>
 
-	<target name="libs" depends="resolve" description="Copy runtime libs to deployment lib directory">
-		<mkdir dir="${lib.dest.path}" />
-		<copy todir="${lib.dest.path}">
-	        <fileset dir="${lib.path}/all" includes="**/*.jar" />
-			<fileset dir="${lib.path}/runtime" includes="**/*.jar" />
-		</copy>
-	</target>
+    <target name="libs"
+            depends="resolve"
+            description="Copy runtime libs to deployment lib directory">
+        <mkdir dir="${lib.dest.path}" />
+        <copy todir="${lib.dest.path}">
+            <fileset dir="${lib.path}/all" includes="**/*.jar" />
+            <fileset dir="${lib.path}/runtime" includes="**/*.jar" />
+        </copy>
+    </target>
 
-	<target name="javac" depends="libs" description="Compile java source">
-		<mkdir dir="${classes.path}" />
-		<javac srcdir="${source.path}" includes="**" encoding="${encoding}" destdir="${classes.path}" source="${source.version}" target="${target.version}" nowarn="true" debug="true" debuglevel="lines,vars,source">
-			<classpath refid="project.class.path" />
-		</javac>
-		<copy todir="${classes.path}">
-			<fileset dir="${source.path}" excludes="**/*.java" />
-		</copy>
-	</target>
+    <target name="javac" depends="libs" description="Compile java source">
+        <mkdir dir="${classes.path}" />
+        <javac srcdir="${source.path}"
+               includes="**"
+               encoding="${encoding}"
+               destdir="${classes.path}"
+               source="${source.version}"
+               target="${target.version}"
+               nowarn="true"
+               debug="true"
+               debuglevel="lines,vars,source">
+            <classpath refid="project.class.path" />
+        </javac>
+        <copy todir="${classes.path}">
+            <fileset dir="${source.path}" excludes="**/*.java" />
+        </copy>
+    </target>
 
-	<target name="gwtc" depends="javac" description="GWT compile to JavaScript">
-		<java failonerror="true" fork="true" classname="com.google.gwt.dev.Compiler">
-			<classpath>
-				<pathelement location="${source.path}" />
-				<path refid="project.class.path" />
-			</classpath>
-			<!-- add jvmarg -Xss16M or similar if you see a StackOverflowError -->
-			<jvmarg value="-Xmx256M" />
-			<!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
-			<arg line="-style ${gwt.compile.style}" />
-			<arg line="-logLevel ${gwt.compile.logLevel}" />
-			<arg value="${gwt.compile.disableClassMetadata}" />
-			<arg value="${gwt.compile.disableCastChecking}" />
-			<arg value="${gwt.module}" />
-		</java>
-	</target>
+    <target name="gwtc" depends="javac" description="GWT compile to JavaScript">
+        <java failonerror="true"
+              fork="true"
+              classname="com.google.gwt.dev.Compiler">
+            <classpath>
+                <pathelement location="${source.path}" />
+                <path refid="project.class.path" />
+            </classpath>
+            <!-- add jvmarg -Xss16M or similar if you see a StackOverflowError -->
+            <jvmarg value="-Xmx256M" />
+            <!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
+            <arg line="-style ${gwt.compile.style}" />
+            <arg line="-logLevel ${gwt.compile.logLevel}" />
+            <arg value="${gwt.compile.disableClassMetadata}" />
+            <arg value="${gwt.compile.disableCastChecking}" />
+            <arg value="${gwt.module}" />
+        </java>
+    </target>
 
-	<target name="devmode" depends="javac" description="Run development mode">
-		<java failonerror="true" fork="true" classname="com.google.gwt.dev.DevMode">
-			<classpath>
-				<pathelement location="${source.path}" />
-				<path refid="project.class.path" />
-			</classpath>
-			<jvmarg value="-Xmx256M" />
-			<arg value="-startupUrl" />
-			<arg value="${gwt.module.devmode.startupUrl}" />
-			<!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
-			<arg value="${gwt.module.devmode}" />
-		</java>
-	</target>
+    <target name="devmode" depends="javac" description="Run development mode">
+        <java failonerror="true"
+              fork="true"
+              classname="com.google.gwt.dev.DevMode">
+            <classpath>
+                <pathelement location="${source.path}" />
+                <path refid="project.class.path" />
+            </classpath>
+            <jvmarg value="-Xmx256M" />
+            <arg value="-startupUrl" />
+            <arg value="${gwt.module.devmode.startupUrl}" />
+            <!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
+            <arg value="${gwt.module.devmode}" />
+        </java>
+    </target>
 
-	<!-- Begin tests. -->
-	<target name="javac.tests" depends="javac" description="Compiles test code">
-		<javac srcdir="${test.path}" includes="**" encoding="${encoding}" source="${source.version}" target="${target.version}" nowarn="true" debug="true" debuglevel="lines,vars,source">
-			<classpath location="${junit.jar.file}" />
-			<classpath refid="project.class.path" />
-		</javac>
-	</target>
+    <!-- Begin tests. -->
+    <target name="javac.tests" depends="javac" description="Compiles test code">
+        <javac srcdir="${test.path}"
+               includes="**"
+               encoding="${encoding}"
+               source="${source.version}"
+               target="${target.version}"
+               nowarn="true"
+               debug="true"
+               debuglevel="lines,vars,source">
+            <classpath location="${junit.jar.file}" />
+            <classpath refid="project.class.path" />
+        </javac>
+    </target>
 
-	<target name="test.dev" depends="javac.tests" description="Run development mode tests">
-		<mkdir dir="reports/htmlunit.dev" />
-		<junit fork="yes" printsummary="yes" haltonfailure="yes">
-			<jvmarg line="-Xmx256m" />
-			<sysproperty key="gwt.args" value="-logLevel WARN" />
-			<sysproperty key="java.awt.headless" value="true" />
-			<classpath>
-				<pathelement location="${source.path}" />
-				<pathelement location="${test.path}" />
-				<path refid="project.class.path" />
-				<pathelement location="${junit.jar.file}" />
-			</classpath>
-			<batchtest todir="reports/htmlunit.dev">
-				<fileset dir="${test.path}">
-					<include name="**/*Test.java" />
-				</fileset>
-			</batchtest>
-			<formatter type="plain" />
-			<formatter type="xml" />
-		</junit>
-	</target>
+    <target name="test.dev"
+            depends="javac.tests"
+            description="Run development mode tests">
+        <mkdir dir="reports/htmlunit.dev" />
+        <junit fork="yes" printsummary="yes" haltonfailure="yes">
+            <jvmarg line="-Xmx256m" />
+            <sysproperty key="gwt.args" value="-logLevel WARN" />
+            <sysproperty key="java.awt.headless" value="true" />
+            <classpath>
+                <pathelement location="${source.path}" />
+                <pathelement location="${test.path}" />
+                <path refid="project.class.path" />
+                <pathelement location="${junit.jar.file}" />
+            </classpath>
+            <batchtest todir="reports/htmlunit.dev">
+                <fileset dir="${test.path}">
+                    <include name="**/*Test.java" />
+                </fileset>
+            </batchtest>
+            <formatter type="plain" />
+            <formatter type="xml" />
+        </junit>
+    </target>
 
-	<target name="test.prod" depends="javac.tests" description="Run production mode tests">
-		<mkdir dir="reports/htmlunit.prod" />
-		<junit fork="yes" printsummary="yes" haltonfailure="yes">
-			<jvmarg line="-Xmx256m" />
-			<sysproperty key="gwt.args" value="-prod -logLevel WARN -out www-test" />
-			<sysproperty key="java.awt.headless" value="true" />
-			<classpath>
-				<pathelement location="${source.path}" />
-				<pathelement location="${test.path}" />
-				<path refid="project.class.path" />
-				<pathelement location="${junit.jar.file}" />
-			</classpath>
-			<batchtest todir="reports/htmlunit.prod">
-				<fileset dir="${test.path}">
-					<include name="**/*Test.java" />
-				</fileset>
-			</batchtest>
-			<formatter type="plain" />
-			<formatter type="xml" />
-		</junit>
-	</target>
+    <target name="test.prod"
+            depends="javac.tests"
+            description="Run production mode tests">
+        <mkdir dir="reports/htmlunit.prod" />
+        <junit fork="yes" printsummary="yes" haltonfailure="yes">
+            <jvmarg line="-Xmx256m" />
+            <sysproperty key="gwt.args"
+                         value="-prod -logLevel WARN -out www-test" />
+            <sysproperty key="java.awt.headless" value="true" />
+            <classpath>
+                <pathelement location="${source.path}" />
+                <pathelement location="${test.path}" />
+                <path refid="project.class.path" />
+                <pathelement location="${junit.jar.file}" />
+            </classpath>
+            <batchtest todir="reports/htmlunit.prod">
+                <fileset dir="${test.path}">
+                    <include name="**/*Test.java" />
+                </fileset>
+            </batchtest>
+            <formatter type="plain" />
+            <formatter type="xml" />
+        </junit>
+    </target>
 
-	<target name="test" description="Run development and production mode tests">
-		<antcall target="test.dev" />
-		<antcall target="test.prod" />
-	</target>
-	<!-- End tests -->
+    <target name="test" description="Run development and production mode tests">
+        <antcall target="test.dev" />
+        <antcall target="test.prod" />
+    </target>
+    <!-- End tests -->
 
-	<target name="hosted" depends="devmode" description="Run development mode (NOTE: the 'hosted' target is deprecated)" />
+    <target name="hosted"
+            depends="devmode"
+            description="Run development mode (NOTE: the 'hosted' target is deprecated)" />
 
-	<target name="build" depends="gwtc" description="Build this project" />
+    <target name="build" depends="gwtc" description="Build this project" />
 
-	<target name="war" depends="build" description="Create a war file">
-		<zip destfile="${project.distname}.war" basedir="war" />
-	</target>
+    <target name="war" depends="build" description="Create a war file">
+        <zip destfile="${project.distname}.war" basedir="war" />
+    </target>
 
-	<target name="clean" description="Cleans this project">
-		<delete file="${project.distname}.jar" />
-		<delete file="${project.distname}.war" />
-		<delete dir="${classes.path}" failonerror="false" />
-		<delete dir="${lib.dest.path}" failonerror="false" />
-		<delete dir="${lib.path}" failonerror="false" />
-		<delete dir="war/${gwt.module.devmode.name}" failonerror="false" />
-	</target>
+    <target name="clean" description="Cleans this project">
+        <delete file="${project.distname}.jar" />
+        <delete file="${project.distname}.war" />
+        <delete dir="${classes.path}" failonerror="false" />
+        <delete dir="${lib.dest.path}" failonerror="false" />
+        <delete dir="${lib.path}" failonerror="false" />
+        <delete dir="war/${gwt.module.devmode.name}" failonerror="false" />
+    </target>
 
-	<target name="jar" depends="build" description="Package the project into a jar">
-		<jar destfile="${project.distname}.jar">
-			<fileset dir="${classes.path}">
-				<include name="**/*.class" />
-				<exclude name="**/${gwt.module.devmode.name}/**" />
-			</fileset>
-			<fileset dir="${source.path}">
-				<include name="**/*" />
-				<exclude name="**/${gwt.module.devmode.name}/**" />
-				<exclude name="META-INF/jdoconfig.xml" />
-			</fileset>
-		</jar>
-	</target>
+    <target name="jar"
+            depends="build"
+            description="Package the project into a jar">
+        <jar destfile="${project.distname}.jar">
+            <fileset dir="${classes.path}">
+                <include name="**/*.class" />
+                <exclude name="**/${gwt.module.devmode.name}/**" />
+            </fileset>
+            <fileset dir="${source.path}">
+                <include name="**/*" />
+                <exclude name="**/${gwt.module.devmode.name}/**" />
+                <exclude name="META-INF/jdoconfig.xml" />
+            </fileset>
+        </jar>
+    </target>
 
 </project>
