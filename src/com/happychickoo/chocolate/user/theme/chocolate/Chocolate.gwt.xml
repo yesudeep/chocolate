@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.0.0//EN" "http://google-web-toolkit.googlecode.com/svn/tags/2.0.0/distro-source/core/src/gwt-module.dtd">
-<module rename-to="mac">
+<module rename-to="chocolatetheme">
     <inherits name="com.google.gwt.user.User" />
-    <stylesheet src="chocolate/mac/mac.css" />
+    <stylesheet src="chocolate.css" />
 </module>
