@@ -21,7 +21,7 @@
 	<property name="gwt.module" value="com.happychickoo.chocolate.showcase.Showcase" />
 	<property name="gwt.module.devmode" value="${gwt.module}" />
 	<property name="gwt.module.devmode.name" value="showcase" />
-	<property name="gwt.module.devmode.startupUrl" value="showcase.html" />
+	<property name="gwt.module.devmode.startupUrl" value="${gwt.module.devmode.name}.html" />
 	<property name="gwt.compile.style" value="OBFUSCATED" />
 	<property name="gwt.compile.logLevel" value="INFO" />
 	<property name="gwt.compile.disableClassMetadata" value="-XdisableClassMetadata" />
