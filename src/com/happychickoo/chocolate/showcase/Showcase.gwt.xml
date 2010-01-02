@@ -4,7 +4,7 @@
     <inherits name="com.google.gwt.user.User" />
     <inherits name="com.google.gwt.i18n.I18N" />
     <inherits name="com.happychickoo.chocolate.Chocolate" />
-    <inherits name="com.happychickoo.chocolate.user.theme.mac.Mac" />
+    <inherits name="com.happychickoo.chocolate.user.theme.chocolate.Chocolate" />
     <entry-point class="com.happychickoo.chocolate.showcase.client.Showcase" />
     <source path="client" />
 </module>
